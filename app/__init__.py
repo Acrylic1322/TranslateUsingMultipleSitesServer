@@ -1,3 +1,6 @@
+import sys, json
+import urllib,urllib.request
+from app.site_parser.weblio import Weblio
 from flask import Flask, render_template, send_from_directory, request
 
 app = Flask(__name__)
@@ -5,10 +8,18 @@ app = Flask(__name__)
 def page_not_found(e):
     return render_template('404.html'), 404
 
-@app.route("/")
+@app.route('/')
 def hello():
-    return render_template('index.html')
+    url = 'https://translate.weblio.jp/?lp=EJ&lpf=EJ&originalText=This%20is%20a%20pen.'
+    req = urllib.request.Request(url=url)
+    res = urllib.request.urlopen(req)
 
-if __name__ == "__main__":
+    weblio = Weblio()
+    weblio.feed(res.read().decode('utf-8'))
+    weblio.close()
+
+    return json.dumps(weblio.result, ensure_ascii=False)
+
+if __name__ == '__main__':
     app.debug = True
     app.run()
