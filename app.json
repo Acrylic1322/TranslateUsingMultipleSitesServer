@@ -1,15 +1,15 @@
 {
-  "name": "Start on Heroku: Python",
-  "description": "A barebones Python app, which can easily be deployed to Heroku.",
-  "image": "heroku/python",
-  "repository": "https://github.com/heroku/python-getting-started",
-  "keywords": ["python", "django" ],
-  "addons": [ "heroku-postgresql" ],
+  "name": "Translate Using Multiple Sites Server",
+  "description": "",
+  "image": "",
+  "repository": "https://github.com/Acrylic1322/TranslateUsingMultipleSitesServer",
+  "keywords": ["python", "flask" ],
+  "addons": [ "" ],
   "environments": {
     "test": {
       "scripts": {
-        "test-setup": "python manage.py collectstatic --noinput",
-        "test": "python manage.py test"
+        "test-setup": "",
+        "test": ""
       }
     }
   }
