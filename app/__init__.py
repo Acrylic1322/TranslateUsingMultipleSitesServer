@@ -1,5 +1,5 @@
 import sys, json
-import urllib,urllib.request
+import urllib, urllib.request
 from app.site_parser.weblio import Weblio
 from flask import Flask, render_template, send_from_directory, request
 
@@ -10,7 +10,15 @@ def page_not_found(e):
 
 @app.route('/')
 def hello():
-    url = 'https://translate.weblio.jp/?lp=EJ&lpf=EJ&originalText=This%20is%20a%20pen.'
+    return "<h2>Hello, world!</h2>"
+
+@app.route('/weblio/', methods=['GET'])
+def weblio():
+    src = request.args.get('src')
+    if src is None:
+        return ""
+
+    url = 'https://translate.weblio.jp/?lp=EJ&lpf=EJ&originalText=' + urllib.parse.quote(src)
     req = urllib.request.Request(url=url)
     res = urllib.request.urlopen(req)
 
@@ -19,6 +27,7 @@ def hello():
     weblio.close()
 
     return json.dumps(weblio.result, ensure_ascii=False)
+
 
 if __name__ == '__main__':
     app.debug = True
