@@ -4,9 +4,6 @@ from app.site_parser.weblio import Weblio
 from flask import Flask, render_template, send_from_directory, request, abort
 
 app = Flask(__name__)
-@app.errorhandler(404)
-def page_not_found(e):
-    return render_template('404.html'), 404
 
 @app.route('/')
 def hello():
@@ -19,6 +16,11 @@ def weblio(src, dst):
         "jp": "J"
     }
 
+    if src == dst:
+        abort(400)
+    elif not src in codeset or not dst in codeset:
+        abort(501)
+
     text = request.args.get('text')
     if text is None:
         return ""
@@ -30,9 +32,6 @@ def weblio(src, dst):
     dst_for_url = ''
     if dst in codeset:
         dst_for_url = codeset[dst]
-
-    if len(src_for_url) == 0 or len(dst_for_url) == 0:
-        abort(400)
 
     translate_code = src_for_url + dst_for_url
 
