@@ -15,7 +15,7 @@ class Weblio(SiteParser):
     def handle_starttag(self, tag, attrs):
         # If the flow is going throught the li tag of result.
         if self.is_in_result_tag and tag == 'span':
-            if self.result_mode == 'jp':
+            if self.result_mode == 'ja':
                 self.is_recording = True
 
             else:

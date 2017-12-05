@@ -16,7 +16,7 @@ def hello():
 def excite(src, dst):
     codeset = {
         "en": "EN",
-        "jp": "JA"
+        "ja": "JA"
     }
 
     foreign_language_set = {
@@ -38,14 +38,14 @@ def excite(src, dst):
     if src in codeset:
         src_for_url = codeset[src]
 
-        if dst != 'jp':
+        if dst != 'ja':
             foreign_language_for_url = foreign_language_set[dst]
 
     dst_for_url = ''
     if dst in codeset:
         dst_for_url = codeset[dst]
 
-        if dst != 'jp':
+        if dst != 'ja':
             foreign_language_for_url = foreign_language_set[dst]
 
     translate_code = src_for_url + dst_for_url
@@ -67,7 +67,7 @@ def excite(src, dst):
 def weblio(src, dst):
     codeset = {
         "en": "E",
-        "jp": "J"
+        "ja": "J"
     }
 
     if src == dst:

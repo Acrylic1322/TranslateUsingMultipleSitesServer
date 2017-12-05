@@ -23,14 +23,14 @@ def test_get_weblio():
     res = client.get('/weblio/en/en/')
     assert_not_equal(200, res.status_code)
 
-    res = client.get('/weblio/en/jp/')
+    res = client.get('/weblio/en/ja/')
     eq_(200, res.status_code)
 
 def test_right_return_weblio():
-    res = client.get('/weblio/en/jp/?text=I have a pen.')
+    res = client.get('/weblio/en/ja/?text=I have a pen.')
     result = json.loads(res.data)
     ok_(isinstance(result, list))
 
-    res = client.get('/weblio/jp/en/?text=私はペンを持っている．')
+    res = client.get('/weblio/ja/en/?text=私はペンを持っている．')
     result = json.loads(res.data)
     ok_(isinstance(result, list))
