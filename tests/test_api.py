@@ -34,3 +34,28 @@ def test_right_return_weblio():
     res = client.get('/weblio/ja/en/?text=私はペンを持っている．')
     result = json.loads(res.data)
     ok_(isinstance(result, list))
+
+def test_get_excite():
+    res = client.get('/excite/')
+    assert_not_equal(200, res.status_code)
+
+    res = client.get('/excite/en/')
+    assert_not_equal(200, res.status_code)
+
+    res = client.get('/excite/en/bad/')
+    assert_not_equal(200, res.status_code)
+
+    res = client.get('/excite/en/en/')
+    assert_not_equal(200, res.status_code)
+
+    res = client.get('/excite/en/ja/')
+    eq_(200, res.status_code)
+
+def test_right_return_excite():
+    res = client.get('/excite/en/ja/?text=I have a pen.')
+    result = json.loads(res.data)
+    ok_(isinstance(result, list))
+
+    res = client.get('/excite/ja/en/?text=私はペンを持っている．')
+    result = json.loads(res.data)
+    ok_(isinstance(result, list))
