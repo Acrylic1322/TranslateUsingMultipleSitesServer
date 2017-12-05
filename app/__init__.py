@@ -2,6 +2,7 @@ import sys, json
 import urllib, urllib.request
 from app.site_parser.weblio import Weblio
 from app.site_parser.excite import Excite
+from app.site_parser.dictionary_com import DictionaryCom
 from flask import Flask, render_template, send_from_directory, request, abort, make_response
 
 app = Flask(__name__)
@@ -9,6 +10,42 @@ app = Flask(__name__)
 @app.route('/')
 def hello():
     res = make_response("<h2>Hello, world!</h2>")
+    res.headers['Access-Control-Allow-Origin'] = '*'
+    return res
+
+@app.route('/dictionary-com/<src>/<dst>/', methods=['GET'])
+def dictionary_com(src, dst):
+    codeset = {
+        "en": "en",
+        "ja": "ja"
+    }
+
+    if src == dst:
+        abort(400)
+    elif not src in codeset or not dst in codeset:
+        abort(501)
+
+    text = request.args.get('text')
+    if text is None:
+        return ""
+
+    src_for_url = ''
+    if src in codeset:
+        src_for_url = codeset[src]
+
+    dst_for_url = ''
+    if dst in codeset:
+        dst_for_url = codeset[dst]
+
+    url = 'http://translate.reference.com/translate?src=' + src_for_url + '&dst=' + dst_for_url + '&query=' + urllib.parse.quote(text)
+    req = urllib.request.Request(url=url)
+    res = urllib.request.urlopen(req)
+
+    dictionary_com = DictionaryCom()
+    dictionary_com.feed(res.read().decode('utf-8'))
+    dictionary_com.close()
+
+    res = make_response(json.dumps(dictionary_com.results, ensure_ascii=False))
     res.headers['Access-Control-Allow-Origin'] = '*'
     return res
 

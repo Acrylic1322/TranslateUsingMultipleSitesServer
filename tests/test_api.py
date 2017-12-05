@@ -10,28 +10,28 @@ def test_get_index():
     res = client.get('/')
     eq_(200, res.status_code)
 
-def test_get_weblio():
-    res = client.get('/weblio/')
+def test_get_dictionary_com():
+    res = client.get('/dictionary-com/')
     assert_not_equal(200, res.status_code)
 
-    res = client.get('/weblio/en/')
+    res = client.get('/dictionary-com/en/')
     assert_not_equal(200, res.status_code)
 
-    res = client.get('/weblio/en/bad/')
+    res = client.get('/dictionary-com/en/bad/')
     assert_not_equal(200, res.status_code)
 
-    res = client.get('/weblio/en/en/')
+    res = client.get('/dictionary-com/en/en/')
     assert_not_equal(200, res.status_code)
 
-    res = client.get('/weblio/en/ja/')
+    res = client.get('/dictionary-com/en/ja/')
     eq_(200, res.status_code)
 
-def test_right_return_weblio():
-    res = client.get('/weblio/en/ja/?text=I have a pen.')
+def test_right_return_dictionary_com():
+    res = client.get('/dictionary-com/en/ja/?text=I have a pen.')
     result = json.loads(res.data)
     ok_(isinstance(result, list))
 
-    res = client.get('/weblio/ja/en/?text=私はペンを持っている．')
+    res = client.get('/dictionary-com/ja/en/?text=私はペンを持っている．')
     result = json.loads(res.data)
     ok_(isinstance(result, list))
 
@@ -57,5 +57,30 @@ def test_right_return_excite():
     ok_(isinstance(result, list))
 
     res = client.get('/excite/ja/en/?text=私はペンを持っている．')
+    result = json.loads(res.data)
+    ok_(isinstance(result, list))
+
+def test_get_weblio():
+    res = client.get('/weblio/')
+    assert_not_equal(200, res.status_code)
+
+    res = client.get('/weblio/en/')
+    assert_not_equal(200, res.status_code)
+
+    res = client.get('/weblio/en/bad/')
+    assert_not_equal(200, res.status_code)
+
+    res = client.get('/weblio/en/en/')
+    assert_not_equal(200, res.status_code)
+
+    res = client.get('/weblio/en/ja/')
+    eq_(200, res.status_code)
+
+def test_right_return_weblio():
+    res = client.get('/weblio/en/ja/?text=I have a pen.')
+    result = json.loads(res.data)
+    ok_(isinstance(result, list))
+
+    res = client.get('/weblio/ja/en/?text=私はペンを持っている．')
     result = json.loads(res.data)
     ok_(isinstance(result, list))
